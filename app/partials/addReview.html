@@ -1,0 +1,49 @@
+<style>
+.btn:hover { border-color:#FFFE5F ;  }
+
+
+
+input.ng-dirty.ng-invalid{
+	background-color: pink;
+}
+
+input.ng-dirty.ng-valid{
+	background-color: green;
+	color: white
+}
+
+</style>
+
+	<ng-form class="row well form-horizontal" role="form" name="addReviewForm">
+	  	<div class="form-group">
+	    <label class="col-sm-2 control-label">Username</label>
+	    <div class="col-sm-6">
+	      <input type="text" ng-minlength="10" ng-maxlength="50" class="form-control" ng-model="review.username " placeholder="Username" >
+	    </div>
+	  	</div>
+	   	
+
+	    <div class="form-group">
+		<label class="col-sm-2 control-label">Add Review</label>
+		<div class="col-sm-6">
+		<textarea class="form-control" cols="5" rows="5" ng-model="review.rev"></textarea>
+		</div>
+		</div>
+		
+
+		<div class="form-group">
+	    <label class="col-sm-2 control-label">Ratings</label>
+	    <div class="col-sm-5">
+	      <input type="text" class="form-control" ng-model="review.rating" placeholder="Rating">
+	    </div>
+	 	</div>
+
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-2">
+				<button class="btn btn-success btn-block pull-right" ng-disabled="addReviewForm.$invalid" ng-click="addReview(review, addReviewForm)">Add</button>
+			</div>
+		</div>
+		<my-preview preview-content="review.rev"></my-preview>	
+		
+	</ng-form>
+
