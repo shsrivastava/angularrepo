@@ -1,15 +1,42 @@
 angular.module('myApp.services')
-	.factory('courseProvider', ['$http', '$q',
+	/*.factory('courseProvider', ['$http', '$q','parseSettings','$resource',
 
-		function($http, $q) {
+		function($http, $q,$resource,parseSettings) {
+
+			var courseRef = $resource('https://api.parse.com/1/classes/mycourses/:objectId', null, {*/
+				.factory('courseProvider', ['$http', '$q', '$resource', 'parseSettings',
+
+		function($http, $q, $resource, parseSettings) {
+		var courseRef = $resource('https://api.parse.com/1/classes/shcourses/:objectId', null, {
+				get : {
+					method: 'GET',
+					headers: parseSettings,
+					isArray: true,
+					transformResponse : function(data){
+						var raw = angular.fromJson(data);
+						console.log(raw);
+						return raw.results;
+					}
+				},
+				create: {
+					method : 'POST',
+					isArray : false,
+					headers: parseSettings
+				},
+				update: {
+					method: 'PUT',
+					isArray: false,
+					headers: parseSettings
+				}
+			})
 
 
 			function getCourses() {
-				return $http.get('data/courses.json');
+				return courseRef.get();
 			}
 
 			function addCourse(course) {
-				courses.push(course);
+				courseRef.create(course);
 			}
 
 
@@ -17,31 +44,26 @@ angular.module('myApp.services')
 
 			function getCourse(id) {
 
-				var deferred = $q.defer();
+			return courseRef.get(
+					{
+					where: {'objectId':id}
+					
+					}
+				);
+			}
 
-				var targetCourse;
-
-				var courses;
-				$http.get('data/courses.json').success(function(data) {
-					courses = data;
-
-					angular.forEach(courses, function(item, index) {
-						if (item.id === id) {
-							targetCourse = item;
-
-							deferred.resolve(targetCourse);
-						}
-					})
+			function updateavg(avg,id){
+				return courseRef.update({ objectId:id },{
+				    avg_rating:avg
+					//'courseID': courseID
 				});
-
-				return deferred.promise;
 			}
 
 			return {
 				getCourses: getCourses,
 				add: addCourse,
 				get: getCourse,
-				
+				updateavg:updateavg
 			};
 
 		}

@@ -3,7 +3,7 @@ angular.module('myApp.services')
 			.factory('reviewProvider', ['$http', '$q', '$resource', 'parseSettings',
 
 		function($http, $q, $resource, parseSettings) {
-		var courseRef = $resource('https://api.parse.com/1/classes/courses/', null, {
+		var courseRef = $resource('https://api.parse.com/1/classes/coursesS/:objectId', null, {
 				get: {
 					method: 'GET',
 					headers: parseSettings,
@@ -17,6 +17,11 @@ angular.module('myApp.services')
 				create: {
 					method : 'POST',
 					isArray : false,
+					headers: parseSettings
+				},
+				update: {
+					method: 'PUT',
+					isArray: false,
 					headers: parseSettings
 				}
 			})
@@ -43,25 +48,30 @@ angular.module('myApp.services')
 
 			
 			function getReviews()
-	 {
-		return reviews;
-	}
+	 		{
+				return reviews;
+			}
 			
 			function addReview(myreview) {
 			/*reviews.push(myreview);*/
-			courseRef.create(myreview);
+				courseRef.create(myreview);
 			}
 
-			function getReview(course_id)
- 			{
-			return courseRef.get({
-					course_id: course_id
-		
-			});	
-
-			};
-
+			function getReview(id)
+			{
+				return courseRef.get(
+				{
+					where: {'course_id':id}
+					
+				});
+			}
 			
+			function updatelikes(review)
+			{
+					return courseRef.update({ objectId:review.objectId },{
+				   	likes:review.likes
+				});
+			}
 
 			function getavg(myreview) {
 
@@ -77,7 +87,7 @@ angular.module('myApp.services')
 				console.log(avgRating);
 				return avgRating;
 				
-			};
+			}
 
 
 
@@ -85,7 +95,8 @@ angular.module('myApp.services')
 				getReviews:getReviews,
 				add: addReview,
 				get:getReview,
-				getavg:getavg
+				getavg:getavg,
+				update:updatelikes
 			};
 
 		}

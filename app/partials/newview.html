@@ -1,18 +1,15 @@
-<div class="container">
 
- <div class="row">
-      
-        <div class="col-sm-6 col-md-4" ng-repeat="c in courses" >
-        <img ng-src="http://i.imgur.com/{{c.pic}}" width="300px"  />
-        </br>
-        <div class="caption" ng-bind="c.name | uppercase"></div>
-        
-        
-       </div>
-        
 
+  <div class="container" >
+    <div class="row" >
+      <div class="col-sm-6" ng-repeat="c in courses">
+        <div class="thumbnail" style="width:400px;height:400px">
+          <img ng-src="{{c.pic}}" style="width:300px;height:300px"/> 
+          <div class="caption">
+          	<a href="#/details/{{c.objectId}}" class="h3" ng-bind="c.name"></a>
+          </div>
+          <div><p class="btn btn-success pull-right">Avg Rating:{{c.avg_rating | number:2}}</p></div>
+        </div>
+      </div>
+    </div>
   </div>
-
-
-
-</div>

@@ -15,4 +15,12 @@ angular.module('myApp.directives', []).
     
   }
 })
+  .directive('progRate', function(){
+  return {
+    restrict: 'E',
+    templateUrl : 'partials/prog.html',
+    
+  }
+})
+
 
